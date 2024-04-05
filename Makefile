@@ -2,6 +2,9 @@ CC = g++
 D = -DDEBUG
 ALLFILES = obj/readfile.o obj/tree.o obj/main.o
 
+deb:
+	$(CC) $(D) Tree/src/readfile.cpp Tree/src/tree.cpp src/main.cpp
+
 all: $(ALLFILES)
 
 start : $(ALLFILES)
@@ -17,4 +20,4 @@ obj/main.o : src/main.cpp Tree/header/tree.h Tree/header/readfile.h
 	$(CC) -c src/main.cpp -o obj/main.o
 
 clean :
-	rm TREE_EXP.out obj/*.o
+	rm *.out obj/*.o
