@@ -3,7 +3,7 @@
 enum TYPE
 {
     OPERATION   = 1,
-    NUMBER  = 2,
+    NUMBER      = 2,
     VARIABLE    = 3
 };
 

@@ -8,5 +8,9 @@ int main()
     Node* Tree = (Node*) calloc (1, sizeof(Node));
 
     readfile (&Tree, "data/data.txt");
+
+    Node* pNode = TreeCopy (Tree);
     TreePrint (Tree);
+    putchar ('\n');
+    TreePrint (pNode);
 }
