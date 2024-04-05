@@ -1,5 +1,5 @@
-#include "../Tree/header/tree.h"
-#include "../Tree/header/readfile.h"
+#include "../Tree1/header/tree.h"
+#include "../Tree1/header/readfile.h"
 #include <stdlib.h>
 
 
