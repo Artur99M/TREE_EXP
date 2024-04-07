@@ -123,7 +123,7 @@ bool SimplConst(Node* pNode)
                     if (CONST(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
-                        pNode->value.number = log (pNode->left->value.number) / log (pNode->left->value.number);
+                        pNode->value.number = log (pNode->right->value.number) / log (pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
@@ -170,6 +170,8 @@ bool SimplZO (Node* pNode)
     if (pNode == nullptr)
         return true;
 
+    PRINT_DEBUG("SimplZO >>> start\n");
+
     switch (pNode->type)
     {
         case NUMBER:
@@ -181,6 +183,7 @@ bool SimplZO (Node* pNode)
             switch (pNode->value.operation)
             {
                 case MUL:
+                    PRINT_DEBUG("SimplZO >>> MUL\n");
                     if (pNode->left->type == NUMBER && isOne(pNode->left->value.number))
                     {
                         SimpleChange (pNode, 'l');
@@ -200,6 +203,7 @@ bool SimplZO (Node* pNode)
                     }
 
                 case ADD:
+                    PRINT_DEBUG("SimplZO >>> ADD\n");
                     if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
                     {
                         SimpleChange (pNode, 'l');
@@ -212,6 +216,7 @@ bool SimplZO (Node* pNode)
                     }
 
                 case DIV:
+                    PRINT_DEBUG("SimplZO >>> DIV\n");
                     if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
                     {
                         TreeDtor (pNode);
@@ -225,6 +230,7 @@ bool SimplZO (Node* pNode)
                     }
 
                 case EXP:
+                    PRINT_DEBUG("SimplZO >>> EXP\n");
                     if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
                     {
                         TreeDtor (pNode);
@@ -259,8 +265,9 @@ void SimplTree(Node* pNode)
     if (pNode == nullptr)
         return;
 
-    while (!SimplConst(pNode) && !SimplZO(pNode))
-        PRINT_DEBUG ("SimplTree >>> I do it\n");
+    while (true)
+        if (SimplConst(pNode) && SimplZO(pNode))
+            break;
 }
 
 void SimpleChange (Node* pNode, char value)

@@ -3,6 +3,7 @@
 #include "../header/Diff.h"
 #include "../header/SimpleTreeExp.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 
 int main()
@@ -10,15 +11,16 @@ int main()
     Node* Tree = (Node*) calloc (1, sizeof(Node));
 
     readfile (&Tree, "data/data.txt");
-    // Node* pNode = TreeCopy (Tree);
-    // SimplTree (Tree);
-    while (SimplConst(Tree));
     TreePrint (Tree);
+    putchar ('\n');
     SimplTree (Tree);
     TreePrint (Tree);
     // Node* diff = Diff (Tree);
-    // TreeDtor (Tree);
+    TreeDtor (Tree);
     // TreePrint (diff);
+    // putchar ('\n');
+    // SimplTree (diff);
+    // putchar ('\n');
     // TreePrint (diff);
     // TreeDtor (diff);
 }
