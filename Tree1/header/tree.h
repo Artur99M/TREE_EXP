@@ -29,6 +29,13 @@ enum TREE_ERROR
 TREE_ERROR TreePrint (const Node*);
 TREE_ERROR TreeFPrint (Node*, char*);
 Node* TreeCopy (const Node*);
-Node* CreateNode (TYPE, elem_t, Node*, Node*);
+// Node* CreateNode (TYPE, elem_t,  Node*, Node*);
+Node* CreateNodeNumber  (double, Node*, Node*);
+Node* CreateNodeOperation (OP,     Node*, Node*);
+Node* CreateNodeVariable  (char,   Node*, Node*);
 void TreeDtor (Node*);
+
+// #define CreateNode (NUMBER, x,  left, right) CreateNodeNumber (x, left, right)
+// #define CreateNode (OPERATION, x,  left, right) CreateNodeOperation (x, left, right)
+// #define CreateNode (VARIABLE, x,  left, right) CreateNodeVariable (x, left, right)
 #endif

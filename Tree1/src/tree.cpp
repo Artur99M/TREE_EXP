@@ -147,35 +147,87 @@ Node* TreeCopy (const Node* pNode)
     return CopyNode;
 }
 
-Node* CreateNode (TYPE type, elem_t value, Node* left, Node* right)
+// Node* CreateNode (TYPE type, double val, Node* left, Node* right)
+// {
+//     elem_t value;
+//     value.number = val;
+//     Node* pNode = (Node*) calloc (1, sizeof (Node));
+//     PRINT_DEBUG ("CreateNode >>> pNode = %p\n", pNode);
+//     if (pNode == nullptr)
+//         return nullptr;
+//     pNode->type  = type;
+//     pNode->left  = left;
+//     pNode->right = right;
+//     PRINT_DEBUG ("CreateNode >>> pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode->type, pNode->left, pNode->right);
+//
+//     switch (pNode->type)
+//     {
+//         case NUMBER:
+//             pNode->value.number    = value.number;
+//             PRINT_DEBUG ("CreateNode >>> pNode->value = %lf\n", pNode->value.number);
+//             break;
+//         case OPERATION:
+//             pNode->value.operation = value.operation;
+//             PRINT_DEBUG ("CreateNode >>> pNode->value = %d\n", pNode->value.operation);
+//             break;
+//         case VARIABLE:
+//             pNode->value.variable  = value.variable;
+//             PRINT_DEBUG ("CreateNode >>> pNode->value = %c\n", pNode->value.variable);
+//             break;
+//         default:
+//             free(pNode);
+//             pNode = nullptr;
+//     }
+//
+//     PRINT_DEBUG ("CreateNode >>> return pNode = %p\n", pNode);
+//     return pNode;
+// }
+
+Node* CreateNodeNumber (double value, Node* left, Node* right)
 {
     Node* pNode = (Node*) calloc (1, sizeof (Node));
     PRINT_DEBUG ("CreateNode >>> pNode = %p\n", pNode);
     if (pNode == nullptr)
         return nullptr;
-    pNode->type  = type;
+    pNode->type  = NUMBER;
     pNode->left  = left;
     pNode->right = right;
     PRINT_DEBUG ("CreateNode >>> pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode->type, pNode->left, pNode->right);
+    pNode->value.number = value;
+    PRINT_DEBUG ("CreateNode >>> pNode->value = %lg\n", pNode->value.number);
+    PRINT_DEBUG ("CreateNode >>> return pNode = %p\n", pNode);
+    return pNode;
+}
 
-    switch (pNode->type)
-    {
-        case NUMBER:
-            pNode->value.number    = value.number;
-            PRINT_DEBUG ("CreateNode >>> pNode->value = %lf\n", pNode->value.number);
-            break;
-        case OPERATION:
-            pNode->value.operation = value.operation;
-            PRINT_DEBUG ("CreateNode >>> pNode->value = %d\n", pNode->value.operation);
-            break;
-        case VARIABLE:
-            pNode->value.variable  = value.variable;
-            PRINT_DEBUG ("CreateNode >>> pNode->value = %c\n", pNode->value.variable);
-            break;
-        default:
-            free(pNode);
-            pNode = nullptr;
-    }
+Node* CreateNodeOperation (OP value, Node* left, Node* right)
+{
+    Node* pNode = (Node*) calloc (1, sizeof (Node));
+    PRINT_DEBUG ("CreateNode >>> pNode = %p\n", pNode);
+    if (pNode == nullptr)
+        return nullptr;
+    pNode->type  = OPERATION;
+    pNode->left  = left;
+    pNode->right = right;
+    PRINT_DEBUG ("CreateNode >>> pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode->type, pNode->left, pNode->right);
+    pNode->value.operation = value;
+    PRINT_DEBUG ("CreateNode >>> pNode->value = %d\n", pNode->value.operation);
+
+    PRINT_DEBUG ("CreateNode >>> return pNode = %p\n", pNode);
+    return pNode;
+}
+
+Node* CreateNodeVariable (char value, Node* left, Node* right)
+{
+    Node* pNode = (Node*) calloc (1, sizeof (Node));
+    PRINT_DEBUG ("CreateNode >>> pNode = %p\n", pNode);
+    if (pNode == nullptr)
+        return nullptr;
+    pNode->type  = VARIABLE;
+    pNode->left  = left;
+    pNode->right = right;
+    PRINT_DEBUG ("CreateNode >>> pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode->type, pNode->left, pNode->right);
+    pNode->value.variable = value;
+    PRINT_DEBUG ("CreateNode >>> pNode->value = %c\n", pNode->value.variable);
 
     PRINT_DEBUG ("CreateNode >>> return pNode = %p\n", pNode);
     return pNode;
