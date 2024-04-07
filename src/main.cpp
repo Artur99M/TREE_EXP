@@ -14,6 +14,7 @@ int main()
     // TreePrint (pNode);
     Node* diff = Diff (Tree);
     TreeDtor (Tree);
+    TreePrint (diff);
     SimplTree (diff);
     TreePrint (diff);
     TreeDtor (diff);

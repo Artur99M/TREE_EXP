@@ -182,23 +182,23 @@ bool SimplZO (Node* pNode)
                     if (pNode->left->type == NUMBER && isOne(pNode->left->value.number))
                     {
                         pNode->type  = NUMBER;
-                        pNode->value = pNode->right;
+                        pNode->value = pNode->right->value;
                         TreeDtor (pNode->left);
                         pNode->left = pNode->right->left;
                         Node* oldpNode = pNode->right;
                         pNode->right = pNode->right->right;
                         free (oldpNode);
                         return false;
-                        // Node* newpNode = pNode->right;
-                        // free (pNode);
-                        // pNode = newpNode;
-                        // return false;
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
-                        Node* newpNode = pNode->left;
-                        free (pNode);
-                        pNode = newpNode;
+                        pNode->type  = NUMBER;
+                        pNode->value = pNode->left->value;
+                        TreeDtor (pNode->left);
+                        pNode->right = pNode->left->right;
+                        Node* oldpNode = pNode->left;
+                        pNode->left = pNode->left->left;
+                        free (oldpNode);
                         return false;
                     }
                     else if ((pNode->left->type  == NUMBER && isZero(pNode->left->value.number)) ||
@@ -213,7 +213,7 @@ bool SimplZO (Node* pNode)
                     if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
                     {
                         pNode->type  = NUMBER;
-                        pNode->value = pNode->right;
+                        pNode->value = pNode->right->value;
                         TreeDtor (pNode->left);
                         pNode->left = pNode->right->left;
                         Node* oldpNode = pNode->right;
@@ -224,8 +224,8 @@ bool SimplZO (Node* pNode)
                     else if (pNode->right->type == NUMBER && isZero(pNode->right->value.number))
                     {
                         pNode->type  = NUMBER;
-                        pNode->value = pNode->right;
-                        TreeDtor (pNode->right);
+                        pNode->value = pNode->left->value;
+                        TreeDtor (pNode->left);
                         pNode->right = pNode->left->right;
                         Node* oldpNode = pNode->left;
                         pNode->left = pNode->left->left;
@@ -243,8 +243,8 @@ bool SimplZO (Node* pNode)
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
                         pNode->type  = NUMBER;
-                        pNode->value = pNode->right;
-                        TreeDtor (pNode->right);
+                        pNode->value = pNode->left->value;
+                        TreeDtor (pNode->left);
                         pNode->right = pNode->left->right;
                         Node* oldpNode = pNode->left;
                         pNode->left = pNode->left->left;
@@ -268,8 +268,8 @@ bool SimplZO (Node* pNode)
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
                         pNode->type  = NUMBER;
-                        pNode->value = pNode->right;
-                        TreeDtor (pNode->right);
+                        pNode->value = pNode->left->value;
+                        TreeDtor (pNode->left);
                         pNode->right = pNode->left->right;
                         Node* oldpNode = pNode->left;
                         pNode->left = pNode->left->left;

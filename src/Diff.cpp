@@ -57,7 +57,8 @@ Node* Diff (const Node* pNode)
                         CreateNodeNumber (1, nullptr, nullptr)))), _D(pNode->left));
                     if (pNode->left->type == NUMBER && pNode->right->type != NUMBER)
                         return _MUL (_MUL (_LN (_C(pNode->left)), _C(pNode)), _D(pNode->right));
-                    // ещё один случай
+                    if (pNode->left->type != NUMBER && pNode->right->type != NUMBER)
+                        _MUL (_EXP (CNN(exp), _MUL (_C(pNode->left), _LN(pNode->right))), _D (_MUL (_C(pNode->left), _LN(pNode->right))));
                 case LOG:
                     if (pNode->left->type == NUMBER && pNode->right->type != NUMBER)
                         return _MUL (_DIV(CreateNodeNumber(1, nullptr, nullptr), _MUL(_C(pNode->right), _LN(_C(pNode->left)))),
@@ -65,7 +66,8 @@ Node* Diff (const Node* pNode)
                     if (pNode->left->type != NUMBER && pNode->right->type == NUMBER)
                         return _D(_DIV (CreateNodeNumber(1, nullptr, nullptr),
                                         CreateNodeOperation(LOG, _C(pNode->right), _C(pNode->left))));
-                    // ещё один случай
+                    if (pNode->left->type != NUMBER && pNode->right->right != NUMBER)
+                        return _D (_DIV ( _LN (pNode->left), _LN (pNode->right)));
                 case ARCSIN:
                     return _MUL (_DIV (CNN(1), _EXP (_ADD (CNN(1), _EXP(_C(pNode->left),
                     CNN(2))), CNN(0.5f))), _D(pNode->left));
