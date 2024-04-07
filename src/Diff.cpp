@@ -66,7 +66,7 @@ Node* Diff (const Node* pNode)
                     if (pNode->left->type != NUMBER && pNode->right->type == NUMBER)
                         return _D(_DIV (CreateNodeNumber(1, nullptr, nullptr),
                                         CreateNodeOperation(LOG, _C(pNode->right), _C(pNode->left))));
-                    if (pNode->left->type != NUMBER && pNode->right->right != NUMBER)
+                    if (pNode->left->type != NUMBER && pNode->right->type != NUMBER)
                         return _D (_DIV ( _LN (pNode->left), _LN (pNode->right)));
                 case ARCSIN:
                     return _MUL (_DIV (CNN(1), _EXP (_ADD (CNN(1), _EXP(_C(pNode->left),

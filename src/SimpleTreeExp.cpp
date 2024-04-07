@@ -4,10 +4,12 @@
 #include <stdio.h>
 #include <math.h>
 
+void SimpleChange (Node* pNode, char value);
 const double Eps = 1e-9;
 
 #define CONST(pNode) pNode->left->type == NUMBER && pNode->right->type == NUMBER
-#define ChangeConst(pNode) pNode->type = NUMBER; TreeDtor (pNode->left); TreeDtor (pNode->right)
+#define CONST1(pNode) pNode->left->type == NUMBER
+#define ChangeConst(pNode) pNode->type = NUMBER; TreeDtor (pNode->left); TreeDtor (pNode->right); pNode->left = nullptr; pNode->right = nullptr;
 #define pi 3.1415f
 
 bool isZero (double x)
@@ -26,7 +28,7 @@ bool SimplConst(Node* pNode)
         return true;
 
 
-    PRINT_DEBUG ("SimplConst >>> pNode->type = %d, pNode->value ", pNode->type);
+    PRINT_DEBUG ("SimplConst >>> pNode->type = %d, pNode->value = ", pNode->type);
     if (pNode->type == NUMBER)
         PRINT_DEBUG ("%lf\n", pNode->value.number);
     if (pNode->type == VARIABLE)
@@ -78,7 +80,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case SIN:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = sin(pNode->left->value.number);
@@ -86,7 +88,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case COS:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = cos(pNode->left->value.number);
@@ -94,7 +96,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case TG:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = tan(pNode->left->value.number);
@@ -102,7 +104,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case CTG:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = 1 / tan(pNode->left->value.number);
@@ -126,7 +128,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case ARCSIN:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = asin(pNode->left->value.number);
@@ -134,7 +136,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case ARCCOS:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = acos(pNode->left->value.number);
@@ -142,7 +144,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case ARCTG:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = atan(pNode->left->value.number);
@@ -150,7 +152,7 @@ bool SimplConst(Node* pNode)
                         return false;
                     }
                 case ARCCTG:
-                    if (CONST(pNode))
+                    if (CONST1(pNode))
                     {
                         PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
                         pNode->value.number = pi - atan(pNode->left->value.number);
@@ -181,24 +183,12 @@ bool SimplZO (Node* pNode)
                 case MUL:
                     if (pNode->left->type == NUMBER && isOne(pNode->left->value.number))
                     {
-                        pNode->type  = NUMBER;
-                        pNode->value = pNode->right->value;
-                        TreeDtor (pNode->left);
-                        pNode->left = pNode->right->left;
-                        Node* oldpNode = pNode->right;
-                        pNode->right = pNode->right->right;
-                        free (oldpNode);
+                        SimpleChange (pNode, 'l');
                         return false;
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
-                        pNode->type  = NUMBER;
-                        pNode->value = pNode->left->value;
-                        TreeDtor (pNode->left);
-                        pNode->right = pNode->left->right;
-                        Node* oldpNode = pNode->left;
-                        pNode->left = pNode->left->left;
-                        free (oldpNode);
+                        SimpleChange (pNode, 'r');
                         return false;
                     }
                     else if ((pNode->left->type  == NUMBER && isZero(pNode->left->value.number)) ||
@@ -212,24 +202,12 @@ bool SimplZO (Node* pNode)
                 case ADD:
                     if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
                     {
-                        pNode->type  = NUMBER;
-                        pNode->value = pNode->right->value;
-                        TreeDtor (pNode->left);
-                        pNode->left = pNode->right->left;
-                        Node* oldpNode = pNode->right;
-                        pNode->right = pNode->right->right;
-                        free (oldpNode);
+                        SimpleChange (pNode, 'l');
                         return false;
                     }
                     else if (pNode->right->type == NUMBER && isZero(pNode->right->value.number))
                     {
-                        pNode->type  = NUMBER;
-                        pNode->value = pNode->left->value;
-                        TreeDtor (pNode->left);
-                        pNode->right = pNode->left->right;
-                        Node* oldpNode = pNode->left;
-                        pNode->left = pNode->left->left;
-                        free (oldpNode);
+                        SimpleChange (pNode, 'r');
                         return false;
                     }
 
@@ -242,13 +220,7 @@ bool SimplZO (Node* pNode)
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
-                        pNode->type  = NUMBER;
-                        pNode->value = pNode->left->value;
-                        TreeDtor (pNode->left);
-                        pNode->right = pNode->left->right;
-                        Node* oldpNode = pNode->left;
-                        pNode->left = pNode->left->left;
-                        free (oldpNode);
+                        SimpleChange (pNode, 'r');
                         return false;
                     }
 
@@ -267,13 +239,7 @@ bool SimplZO (Node* pNode)
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
-                        pNode->type  = NUMBER;
-                        pNode->value = pNode->left->value;
-                        TreeDtor (pNode->left);
-                        pNode->right = pNode->left->right;
-                        Node* oldpNode = pNode->left;
-                        pNode->left = pNode->left->left;
-                        free (oldpNode);
+                        SimpleChange (pNode, 'r');
                         return false;
                     }
                     else if (pNode->right->type == NUMBER && isZero(pNode->right->value.number))
@@ -295,4 +261,31 @@ void SimplTree(Node* pNode)
 
     while (!SimplConst(pNode) && !SimplZO(pNode))
         PRINT_DEBUG ("SimplTree >>> I do it\n");
+}
+
+void SimpleChange (Node* pNode, char value)
+{
+    if (pNode == nullptr || (value != 'l' && value != 'r'))
+        return;
+
+    if (value == 'l')
+    {
+        pNode->type  = pNode->right->type;
+        pNode->value = pNode->right->value;
+        TreeDtor (pNode->left);
+        pNode->left = pNode->right->left;
+        Node* oldpNode = pNode->right;
+        pNode->right = pNode->right->right;
+        free (oldpNode);
+    }
+    else
+    {
+        pNode->type  = pNode->left->type;
+        pNode->value = pNode->left->value;
+        TreeDtor (pNode->right);
+        pNode->right = pNode->left->right;
+        Node* oldpNode = pNode->left;
+        pNode->left = pNode->left->left;
+        free (oldpNode);
+    }
 }

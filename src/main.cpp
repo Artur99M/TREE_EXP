@@ -11,11 +11,14 @@ int main()
 
     readfile (&Tree, "data/data.txt");
     // Node* pNode = TreeCopy (Tree);
-    // TreePrint (pNode);
-    Node* diff = Diff (Tree);
-    TreeDtor (Tree);
-    TreePrint (diff);
-    SimplTree (diff);
-    TreePrint (diff);
-    TreeDtor (diff);
+    // SimplTree (Tree);
+    while (SimplConst(Tree));
+    TreePrint (Tree);
+    SimplTree (Tree);
+    TreePrint (Tree);
+    // Node* diff = Diff (Tree);
+    // TreeDtor (Tree);
+    // TreePrint (diff);
+    // TreePrint (diff);
+    // TreeDtor (diff);
 }
