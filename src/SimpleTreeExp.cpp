@@ -181,10 +181,18 @@ bool SimplZO (Node* pNode)
                 case MUL:
                     if (pNode->left->type == NUMBER && isOne(pNode->left->value.number))
                     {
-                        Node* newpNode = pNode->right;
-                        free (pNode);
-                        pNode = newpNode;
+                        pNode->type  = NUMBER;
+                        pNode->value = pNode->right;
+                        TreeDtor (pNode->left);
+                        pNode->left = pNode->right->left;
+                        Node* oldpNode = pNode->right;
+                        pNode->right = pNode->right->right;
+                        free (oldpNode);
                         return false;
+                        // Node* newpNode = pNode->right;
+                        // free (pNode);
+                        // pNode = newpNode;
+                        // return false;
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
@@ -204,16 +212,24 @@ bool SimplZO (Node* pNode)
                 case ADD:
                     if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
                     {
-                        Node* newpNode = pNode->right;
-                        free (pNode);
-                        pNode = newpNode;
+                        pNode->type  = NUMBER;
+                        pNode->value = pNode->right;
+                        TreeDtor (pNode->left);
+                        pNode->left = pNode->right->left;
+                        Node* oldpNode = pNode->right;
+                        pNode->right = pNode->right->right;
+                        free (oldpNode);
                         return false;
                     }
-                    else if (pNode->left->type == NUMBER && isZero(pNode->left->value.number))
+                    else if (pNode->right->type == NUMBER && isZero(pNode->right->value.number))
                     {
-                        Node* newpNode = pNode->right;
-                        free (pNode);
-                        pNode = newpNode;
+                        pNode->type  = NUMBER;
+                        pNode->value = pNode->right;
+                        TreeDtor (pNode->right);
+                        pNode->right = pNode->left->right;
+                        Node* oldpNode = pNode->left;
+                        pNode->left = pNode->left->left;
+                        free (oldpNode);
                         return false;
                     }
 
@@ -226,9 +242,13 @@ bool SimplZO (Node* pNode)
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
-                        Node* newpNode = pNode->left;
-                        free (pNode);
-                        pNode = newpNode;
+                        pNode->type  = NUMBER;
+                        pNode->value = pNode->right;
+                        TreeDtor (pNode->right);
+                        pNode->right = pNode->left->right;
+                        Node* oldpNode = pNode->left;
+                        pNode->left = pNode->left->left;
+                        free (oldpNode);
                         return false;
                     }
 
@@ -247,9 +267,13 @@ bool SimplZO (Node* pNode)
                     }
                     else if (pNode->right->type == NUMBER && isOne(pNode->right->value.number))
                     {
-                        Node* newpNode = pNode->left;
-                        free (pNode);
-                        pNode = newpNode;
+                        pNode->type  = NUMBER;
+                        pNode->value = pNode->right;
+                        TreeDtor (pNode->right);
+                        pNode->right = pNode->left->right;
+                        Node* oldpNode = pNode->left;
+                        pNode->left = pNode->left->left;
+                        free (oldpNode);
                         return false;
                     }
                     else if (pNode->right->type == NUMBER && isZero(pNode->right->value.number))
