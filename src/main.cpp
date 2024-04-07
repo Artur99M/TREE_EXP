@@ -1,6 +1,7 @@
 #include "../Tree1/header/tree.h"
 #include "../Tree1/header/readfile.h"
 #include "../header/Diff.h"
+#include "../header/SimpleTreeExp.h"
 #include <stdlib.h>
 
 
@@ -13,6 +14,7 @@ int main()
     // TreePrint (pNode);
     Node* diff = Diff (Tree);
     TreeDtor (Tree);
+    SimplTree (diff);
     TreePrint (diff);
     TreeDtor (diff);
 }
