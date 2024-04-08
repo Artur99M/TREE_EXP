@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 bool SimplConst(Node*);
-bool SimplZO(Node*);
+bool Simpl01 (Node* pNode);
 void SimplTree(Node*);
 
 #endif

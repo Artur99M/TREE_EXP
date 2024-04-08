@@ -13,7 +13,8 @@ int main()
     readfile (&Tree, "data/data.txt");
     TreePrint (Tree);
     putchar ('\n');
-    SimplTree (Tree);
+    // SimplTree (Tree);
+    while (!Simpl01 (Tree));
     TreePrint (Tree);
     // Node* diff = Diff (Tree);
     TreeDtor (Tree);

@@ -11,12 +11,13 @@ TREE_ERROR TreePrint (const Node* Tree)
 
     // PRINT_DEBUG ("TreePrint >>> start\n");
     // PRINT_DEBUG ("TreePrint >>> Tree->value = %s\n", Tree->value);
+    printf ("{\ntype = %d ", Tree->type);
     if (Tree->type == NUMBER)
-        printf ("{\n%lf\n", Tree->value.number);
+        printf ("\"%lf\"\n", Tree->value.number);
     else if (Tree->type == VARIABLE)
-        printf ("{\n%c\n", Tree->value.variable);
+        printf ("\"%c\"\n", Tree->value.variable);
     else if (Tree->type == OPERATION)
-        printf ("{\n%s\n", OPERATIONS[Tree->value.operation - 1].name);
+        printf ("\"%s\"\n", OPERATIONS[Tree->value.operation - 1].name);
 
     if (Tree->left != nullptr)
     {
