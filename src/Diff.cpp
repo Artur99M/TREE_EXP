@@ -79,9 +79,9 @@ Node* Diff (const Node* pNode)
                 case ARCCTG:
                     return _MUL(_SUB (CNN(0), _DIV(CNN(1), _ADD(CNN(1), _EXP(_C(pNode->left), CNN(2))))), _D(pNode->left));
                 case TG:
-                    return _MUL (_DIV (1, _EXP (_COS (_C(pNode->left)), CNN(2))), _D(pNode->left));
+                    return _MUL (_DIV (CNN(1), _EXP (_COS (_C(pNode->left)), CNN(2))), _D(pNode->left));
                 case CTG:
-                    return _MUL (_DIV (1, _EXP (_SIN (_C(pNode->left)), CNN(2))), _D(pNode->left));
+                    return _MUL (_DIV (CNN(1), _EXP (_SIN (_C(pNode->left)), CNN(2))), _D(pNode->left));
 
 
             }
