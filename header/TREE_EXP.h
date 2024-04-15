@@ -22,7 +22,8 @@ enum OP
     ARCSIN = 11,
     ARCCOS = 12,
     ARCTG  = 13,
-    ARCCTG = 14
+    ARCCTG = 14,
+    EQUAL  = 15
 };
 
 union VALUE
@@ -38,7 +39,7 @@ typedef struct operation
     OP value;
 } operation;
 
-const int num_operation = 14;
+const int num_operation = 15;
 const operation OPERATIONS[] =
     {
     {"+", ADD},
@@ -54,7 +55,8 @@ const operation OPERATIONS[] =
     {"arcsin", ARCSIN},
     {"arccos", ARCCOS},
     {"arctg", ARCTG},
-    {"arcctg", ARCCTG}
+    {"arcctg", ARCCTG},
+    {"=", EQUAL}
     };
 // #include "../Tree/header/tree.h"
 #endif

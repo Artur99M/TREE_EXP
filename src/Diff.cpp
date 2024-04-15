@@ -1,9 +1,10 @@
 #include "../header/Diff.h"
 #include "../Tree1/header/tree.h"
+#include "../../include/TeX.h"
+#include <stdio.h>
 #ifndef nullptr
 #define nullptr 0x0
 #endif
-#define CNN(x) CreateNodeNumber(x, nullptr, nullptr)
 // Node* CreateNodeNumber  (double, Node*, Node*);
 // Node* CreaNodeOperation (OP,     Node*, Node*);
 // Node* CreaNodeVariable  (char,   Node*, Node*);
@@ -21,8 +22,19 @@
 #define _COS(x) CreateNodeOperation (COS, x, nullptr)
 #define _LN(x) CreateNodeOperation ( LOG, CreateNodeNumber(exp, nullptr, nullptr), x)
 
+FILE* out = fopen ("TeX/TeX.tex", "w");
+
+const char* start_str[] = {"Нам нужно разобраться с этим:\n", "Теперь разберемся с этим\n","Рассмотрим это выражение\n",
+"После очевидных преобразований получаем это\n", "Кажется, что с этим уравнением мы не справимся\n",
+"Сделаем несколько преобразований и получим это\n"};
+const int nstrs = 5;
+unsigned int qw = 0;
+
 Node* Diff (const Node* pNode)
 {
+    // fprintf (out, "%s", start_str[qw - (qw/nstrs)*nstrs]);
+    // qw++;
+    // TEX_PRINT (pNode);
     if (pNode == nullptr)
         return nullptr;
 

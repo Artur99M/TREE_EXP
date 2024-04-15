@@ -7,9 +7,9 @@
 void SimpleChange (Node* pNode, char value);
 const double Eps = 1e-9;
 
-#define CONST(pNode) pNode->left->type == NUMBER && pNode->right->type == NUMBER
-#define CONST1(pNode) pNode->left->type == NUMBER
-#define ChangeConst(pNode) pNode->type = NUMBER; TreeDtor (pNode->left); TreeDtor (pNode->right); pNode->left = nullptr; pNode->right = nullptr;
+#define CONST(pNode) ((pNode->left->type == NUMBER) && (pNode->right->type == NUMBER))
+#define CONST1(pNode) (pNode->left->type == NUMBER)
+#define ChangeConst(pNode) pNode->type = NUMBER; TreeDtor (pNode->left); if (pNode->right != nullptr) TreeDtor (pNode->right); pNode->left = nullptr; pNode->right = nullptr;
 #define pi 3.1415f
 
 bool isZero (double x)
@@ -46,69 +46,78 @@ bool SimplConst(Node* pNode)
             return true;
 
         case OPERATION:
+            PRINT_DEBUG ("SimplConst >>> I\'m in case OPERATION\n");
+            PRINT_DEBUG ("CONST(pNode) = %d\n", CONST(pNode));
+            PRINT_DEBUG ("CONST1(pNode) = %d, pNode->value.operation = %d\n", CONST1(pNode), pNode->value.operation);
             switch (pNode->value.operation)
             {
-                PRINT_DEBUG ("SimplConst >>> I\'m in case OPERATION\n");
                 case ADD:
                     if (CONST(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'+\'\n");
                         pNode->value.number = pNode->left->value.number + pNode->right->value.number;
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case SUB:
                     if (CONST(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'-\'\n");
                         pNode->value.number = pNode->left->value.number - pNode->right->value.number;
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case MUL:
                     if (CONST(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'*\'\n");
                         pNode->value.number = pNode->left->value.number * pNode->right->value.number;
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case DIV:
                     if (CONST(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'\\\'\n");
                         pNode->value.number = pNode->left->value.number / pNode->right->value.number;
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case SIN:
-                    if (CONST1(pNode))
+                    if (pNode->left->type == NUMBER)
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'sin\'\n");
                         pNode->value.number = sin(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case COS:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'cos\'\n");
                         pNode->value.number = cos(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case TG:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'tg\'\n");
                         pNode->value.number = tan(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case CTG:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'ctg\'\n");
                         pNode->value.number = 1 / tan(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
@@ -116,51 +125,57 @@ bool SimplConst(Node* pNode)
                 case EXP:
                     if (CONST(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'exp\'\n");
                         pNode->value.number = pow(pNode->left->value.number, pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case LOG:
                     if (CONST(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'log\'\n");
                         pNode->value.number = log (pNode->right->value.number) / log (pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case ARCSIN:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'arcsin\'\n");
                         pNode->value.number = asin(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case ARCCOS:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'arccos\'\n");
                         pNode->value.number = acos(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case ARCTG:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'arctg\'\n");
                         pNode->value.number = atan(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
                 case ARCCTG:
                     if (CONST1(pNode))
                     {
-                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple\n");
+                        PRINT_DEBUG ("SimplConst >>> I\'m doing more simple \'arcctg\'\n");
                         pNode->value.number = pi - atan(pNode->left->value.number);
                         ChangeConst (pNode);
                         return false;
                     }
+                    break;
             }
     }
 
@@ -223,9 +238,9 @@ bool Simpl01 (Node* pNode)
 
     if (pNode->type != OPERATION)
         return true;
+    bool answer = Simpl01(pNode->left) && Simpl01(pNode->right);
 
-    PRINT_DEBUG("Simpl01 >>> run\n");
-    PRINT_DEBUG ("Simpl01 >>> finish: pNode = %p, pNode->value = \"%lg\", pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode, pNode->value.number, pNode->type, pNode->left, pNode->right);
+    PRINT_DEBUG ("Simpl01 >>> run: pNode = %p, pNode->value = \"%lg\", pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode, pNode->value.number, pNode->type, pNode->left, pNode->right);
 
     switch (pNode->value.operation)
     {
@@ -240,18 +255,30 @@ bool Simpl01 (Node* pNode)
             { ChangeToNum (pNode, 0);    return false; }
             if (pNode->right->type == NUMBER && isZero (pNode->right->value.number))
             { ChangeToNum (pNode, 0);    return false; }
+            break;
 
         case ADD:
+            PRINT_DEBUG("Simpl01 >>> ADD\n");
             if (pNode->left->type  == NUMBER && isZero (pNode->left->value.number))
             { SimpleChange (pNode, 'r'); return false; }
             if (pNode->right->type == NUMBER && isZero (pNode->left->value.number))
             { SimpleChange (pNode, 'l'); return false; }
+            break;
+
+        case SUB:
+            PRINT_DEBUG("Simpl01 >>> SUB\n");
+            if (pNode->right->type  == NUMBER && isZero (pNode->left->value.number))
+            { SimpleChange (pNode, 'l'); return false; }
+            break;
 
         case DIV:
+            PRINT_DEBUG("Simpl01 >>> DIV\n");
             if (pNode->left->type  == NUMBER && isZero (pNode->left->value.number))
             { ChangeToNum (pNode, 0);    return false; }
+            break;
 
         case EXP:
+            PRINT_DEBUG("Simpl01 >>> EXP\n");
             if (pNode->left->type  == NUMBER && isOne (pNode->left->value.number))
             { ChangeToNum (pNode, 1);    return false; }
             if (pNode->right->type  == NUMBER && isOne (pNode->right->value.number))
@@ -261,10 +288,11 @@ bool Simpl01 (Node* pNode)
             { ChangeToNum (pNode, 0);    return false; }
             if (pNode->right->type == NUMBER && isZero (pNode->right->value.number))
             { ChangeToNum (pNode, 1);    return false; }
+            break;
     }
 
     PRINT_DEBUG ("Simpl01 >>> finish: pNode = %p, pNode->value = \"%lg\", pNode->type = %d, pNode->left = %p, pNode->right = %p\n", pNode, pNode->value.number, pNode->type, pNode->left, pNode->right);
 
-    return Simpl01(pNode->left) && Simpl01(pNode->right);
+    return answer;
 }
 
